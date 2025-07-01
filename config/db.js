@@ -1,19 +1,13 @@
-const mongoose=require('mongoose');
-require("dotenv").config;
+const mongoose = require('mongoose');
 
-const connectDB=async()=>{
-  try{
-    await mongoose.connect("mongodb+srv://ayushchoudharycdeee22:<db_password>@cluster1.sxtimky.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1"
-    ,{
-        useNewUrlPareser:true,
-        useUnfiedTopology:true,
-    });    
-  }
-  catch(error){
-   console.error("MongoDB connection failed: ",error.message);
-   proccess.exit(1);
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (err) {
+    console.error('MongoDB connection failed:', err.message);
+    process.exit(1); // Corrected here
   }
 };
 
-module.exports=connectDB;
- 
+module.exports = connectDB;
