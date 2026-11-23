@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Board from "./components/Board";
+import Toolbar from "./components/Toolbar";
+import Toolbox from "./components/Toolbox";
+import Sidebar from "./components/Sidebar";
+import BoardProvider from "./store/BoardProvider";
+import ToolboxProvider from "./store/ToolboxProvider";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import { useParams } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
 
+function HomePage() {
+  const { id } = useParams(); // Get the dynamic id
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank" class="text-3xl font-bold underline">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <ToolboxProvider>
+      <div className="app-container">
+        <Toolbar />
+        <Board id={id}/>
+        <Toolbox />
+        <Sidebar /> 
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </ToolboxProvider>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <BoardProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/:id" element={<HomePage />} /> 
+        </Routes>
+      </Router>
+    </BoardProvider>
+  );
+}
+
+export default App;
