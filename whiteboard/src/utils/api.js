@@ -1,8 +1,10 @@
 // utils/api.js
 import axios from "axios";
-import { API_URL } from "./config";
 
-const API_BASE_URL = `${API_URL}/api/canvas`;
+const API_BASE_URL = "https://api-whiteboard-az.onrender.com/api/canvas";
+
+const token = localStorage.getItem('whiteboard_user_token')
+const canvasId = localStorage.getItem('canvas_id')
 
 export const updateCanvas = async (canvasId, elements) => {
   try {
@@ -11,7 +13,7 @@ export const updateCanvas = async (canvasId, elements) => {
       { canvasId, elements },
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("whiteboard_user_token")}`,
+          Authorization: token,
         },
       }
     );
@@ -26,7 +28,7 @@ export const fetchInitialCanvasElements = async (canvasId) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/load/${canvasId}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("whiteboard_user_token")}`,
+        Authorization: token,
       },
     });
     return response.data.elements;

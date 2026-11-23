@@ -12,7 +12,6 @@ import {
 } from "../../utils/element";
 import getStroke from "perfect-freehand";
 import axios from "axios";
-import { API_URL } from "../../utils/config";
 
 
 function Board({ id }) {
@@ -41,11 +40,7 @@ function Board({ id }) {
 
   useEffect(() => {
     if (id) {
-      const token = localStorage.getItem("whiteboard_user_token");
-      socket.io.opts.extraHeaders = token
-        ? { Authorization: `Bearer ${token}` }
-        : {};
-      socket.connect();
+      // Join the canvas room (no need for userId)
       socket.emit("joinCanvas", { canvasId: id });
 
       // Listen for updates from other users
@@ -65,7 +60,6 @@ function Board({ id }) {
       });
 
       return () => {
-        socket.disconnect();
         socket.off("receiveDrawingUpdate");
         socket.off("loadCanvas");
         socket.off("unauthorized");
@@ -77,7 +71,7 @@ function Board({ id }) {
     const fetchCanvasData = async () => {
       if (id && token) {
         try {
-          const response = await axios.get(`${API_URL}/api/canvas/load/${id}`, {
+          const response = await axios.get(`https://api-whiteboard-az.onrender.com/api/canvas/load/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           setCanvasId(id); // Set the current canvas ID

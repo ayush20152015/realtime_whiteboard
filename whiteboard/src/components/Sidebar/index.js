@@ -4,11 +4,11 @@ import './index.min.css';
 import { useNavigate } from 'react-router-dom';
 import boardContext from '../../store/board-context';
 import { useParams } from 'react-router-dom';
-import { API_URL } from '../../utils/config';
 
 
 const Sidebar = () => {
   const [canvases, setCanvases] = useState([]);
+  const token = localStorage.getItem('whiteboard_user_token');
   const { canvasId, setCanvasId,setElements,setHistory, isUserLoggedIn, setUserLoginStatus} = useContext(boardContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -16,7 +16,6 @@ const Sidebar = () => {
   const [success, setSuccess] = useState("");
 
   const { id } = useParams(); 
-  const token = localStorage.getItem('whiteboard_user_token');
 
   useEffect(() => {
     if (isUserLoggedIn) {
@@ -28,7 +27,7 @@ const Sidebar = () => {
 
   const fetchCanvases = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/canvas/list`, {
+      const response = await axios.get('https://api-whiteboard-az.onrender.com/api/canvas/list', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCanvases(response.data);
@@ -53,7 +52,7 @@ const Sidebar = () => {
 
   const handleCreateCanvas = async () => {
     try {
-      const response = await axios.post(`${API_URL}/api/canvas/create`, {}, {
+      const response = await axios.post('https://api-whiteboard-az.onrender.com/api/canvas/create', {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log(response.data)  
@@ -68,7 +67,7 @@ const Sidebar = () => {
 
   const handleDeleteCanvas = async (id) => {
     try {
-      await axios.delete(`${API_URL}/api/canvas/delete/${id}`, {
+      await axios.delete(`https://api-whiteboard-az.onrender.com/api/canvas/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchCanvases();
@@ -105,7 +104,7 @@ const Sidebar = () => {
       setSuccess(""); // Clear previous success message
 
       const response = await axios.put(
-        `${API_URL}/api/canvas/share/${canvasId}`,
+        `https://api-whiteboard-az.onrender.com/api/canvas/share/${canvasId}`,
         { email },
         {
           headers: { Authorization: `Bearer ${token}` },

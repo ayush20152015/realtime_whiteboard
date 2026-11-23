@@ -7,6 +7,8 @@ import {
 } from "../utils/element";
 import { updateCanvas, fetchInitialCanvasElements } from "../utils/api";
 
+const canvasId = "67a66a7c2475972d34655e4d";
+
 const boardReducer = (state, action) => {
   switch (action.type) {
     case BOARD_ACTIONS.CHANGE_TOOL: {

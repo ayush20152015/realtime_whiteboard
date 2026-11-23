@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styles from './index.module.css';
 import boardContext from '../../store/board-context';
-import { API_URL } from '../../utils/config';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,7 +13,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}/api/users/login`, {
+      const response = await fetch('https://api-whiteboard-az.onrender.com/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

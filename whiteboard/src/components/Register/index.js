@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styles from './index.module.css';
-import { API_URL } from '../../utils/config';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +15,7 @@ const Register = () => {
       return;
     }
     try {
-      const response = await fetch(`${API_URL}/api/users/register`, {
+      const response = await fetch('https://api-whiteboard-az.onrender.com/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
